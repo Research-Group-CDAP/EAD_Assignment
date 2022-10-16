@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    username: { type: String, required: false },
-    password: { type: String, required: false },
-    email: { type: String, required: false },
-    vehicleNumber: { type: String, required: false },
-    vehicleType: { type: String, required: false },
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true },
+    vehicleNumber: { type: String, required: true },
+    vehicleType: { type: String, required: true },
   },
   { timestamps: true }
 );
