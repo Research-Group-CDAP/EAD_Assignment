@@ -8,6 +8,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true },
     vehicleNumber: { type: String, required: true },
     vehicleType: { type: String, required: true },
+    token: { type: String, required: false },
   },
   { timestamps: true }
 );

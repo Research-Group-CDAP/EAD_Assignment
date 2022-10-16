@@ -48,7 +48,7 @@ const loginUser = async (req, res) => {
 
 //Register User
 const registerUser = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { username, email, password, vehicleNumber, vehicleType } = req.body;
 
   try {
     //See if user Exist
@@ -60,9 +60,11 @@ const registerUser = async (req, res) => {
 
     //create a Site User instance
     user = new User({
-      fullName,
+      username,
       email,
       password,
+      vehicleNumber,
+      vehicleType,
     });
 
     //Encrypt Password
@@ -109,9 +111,14 @@ const updateUser = async (request, response) => {
   return await User.findById(request.body.Id)
     .then(async (userDetails) => {
       if (userDetails) {
-        
-        if (request.body.fullName) {
-          userDetails.fullName = request.body.fullName;
+        if (request.body.username) {
+          userDetails.username = request.body.username;
+        }
+        if (request.body.vehicleNumber) {
+          userDetails.vehicleNumber = request.body.vehicleNumber;
+        }
+        if (request.body.vehicleType) {
+          userDetails.vehicleType = request.body.vehicleType;
         }
 
         if (request.body.password) {
@@ -149,7 +156,6 @@ const deleteUserPermenently = async (request, response) => {
       return response.json(error);
     });
 };
-
 
 module.exports = {
   getUserDetails,
