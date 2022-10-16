@@ -1,5 +1,5 @@
 {
-    "mongoURL": "mongodb+srv://matricsserver:matricsserver@cluster0.noblywd.mongodb.net/matricsdb?retryWrites=true&w=majority",
+    "mongoURL": "mongodb+srv://matricsserver:matricsserver@cluster0.noblywd.mongodb.net/eaddatabase?retryWrites=true&w=majority",
   
     "jwtSecret": "mysecrettoken"
 }

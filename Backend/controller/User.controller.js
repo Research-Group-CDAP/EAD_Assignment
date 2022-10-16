@@ -2,8 +2,6 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const { exec } = require("child_process");
-const axios = require("axios");
 
 //get User details
 const getUserDetails = async (req, res) => {
@@ -111,26 +109,9 @@ const updateUser = async (request, response) => {
   return await User.findById(request.body.Id)
     .then(async (userDetails) => {
       if (userDetails) {
+        
         if (request.body.fullName) {
           userDetails.fullName = request.body.fullName;
-        }
-        if (request.body.azureUserName) {
-          userDetails.azureUserName = request.body.azureUserName;
-        }
-        if (request.body.azurePassword) {
-          userDetails.azurePassword = request.body.azurePassword;
-        }
-        if (request.body.resourceGroup) {
-          userDetails.resourceGroup = request.body.resourceGroup;
-        }
-        if (request.body.phoneNumber) {
-          userDetails.phoneNumber = request.body.phoneNumber;
-        }
-        if (request.body.clusterName) {
-          userDetails.clusterName = request.body.clusterName;
-        }
-        if (request.body.azureSubscriptionId) {
-          userDetails.azureSubscriptionId = request.body.azureSubscriptionId;
         }
 
         if (request.body.password) {
@@ -159,110 +140,6 @@ const updateUser = async (request, response) => {
     });
 };
 
-const updatePluginList = async (request, response) => {
-  return await User.findById(request.body.Id)
-    .then(async (userDetails) => {
-      if (userDetails) {
-        if (request.body.plugin && request.body.type) {
-          if (request.body.type === "ADD") {
-            userDetails.plugins.push(request.body.plugin);
-            userDetails.plugins = userDetails.plugins;
-          } else {
-            userDetails.plugins = userDetails.plugins.filter(
-              (e) => e !== request.body.plugin
-            );
-          }
-        }
-
-        return await userDetails
-          .save()
-          .then((updatedUser) => {
-            return response.json(updatedUser);
-          })
-          .catch((error) => {
-            return response.json(error);
-          });
-      } else {
-        return response.json("User Not Found");
-      }
-    })
-    .catch((error) => {
-      return response.json(error);
-    });
-};
-
-const installIstio = async (request, response) => {
-  return await User.findById(request.params.userId)
-    .then(async (userDetails) => {
-      if (userDetails) {
-        axios
-          .post("http://localhost:4003/install/istio")
-          .then(async (istionResponse) => {
-            console.log(istionResponse.data.installed);
-            userDetails.isIstioInstalled = istionResponse.data.installed;
-            return await userDetails
-              .save()
-              .then((updatedUser) => {
-                return response.json(istionResponse.data);
-              })
-              .catch((error) => {
-                return response.json(error);
-              });
-          })
-          .catch((error) => {
-            return response.json(error);
-          });
-      } else {
-        return response.json("User Not Found");
-      }
-    })
-    .catch((error) => {
-      return response.json(error);
-    });
-};
-
-const configurePrometheus = async (request, response) => {
-  return await User.findById(request.params.userId)
-    .then(async (userDetails) => {
-      if (userDetails) {
-        axios
-          .post("http://localhost:4003/configure/prometheus")
-          .then(async (prometheusResponse) => {
-            console.log(prometheusResponse.data.configured);
-            userDetails.isPrometheusConfigured =
-              prometheusResponse.data.configured;
-            return await userDetails
-              .save()
-              .then((updatedUser) => {
-                return response.json(prometheusResponse.data);
-              })
-              .catch((error) => {
-                return response.json(error);
-              });
-          })
-          .catch((error) => {
-            return response.json(error);
-          });
-      } else {
-        return response.json("User Not Found");
-      }
-    })
-    .catch((error) => {
-      return response.json(error);
-    });
-};
-
-const activePrometheus = async (request, response) => {
-  return axios
-    .post("http://localhost:4003/active/prometheus")
-    .then(async (prometheusResponse) => {
-      return response.json(prometheusResponse.data.active);
-    })
-    .catch((error) => {
-      return response.json(error);
-    });
-};
-
 const deleteUserPermenently = async (request, response) => {
   return await User.findByIdAndDelete(request.params.userId)
     .then((user) => {
@@ -273,62 +150,6 @@ const deleteUserPermenently = async (request, response) => {
     });
 };
 
-const logintoCluster = async (request, response) => {
-  await exec(
-    `az login -u ${request.body.azureUserName} -p ${request.body.azurePassword}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        response.json({ connected: false });
-      } else {
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-
-        exec(
-          `az account set --subscription ${request.body.azureSubscriptionId}`,
-          (error, stdout, stderr) => {
-            if (error) {
-              response.json({ connected: false });
-            } else {
-              console.log(`stdout: ${stdout}`);
-              console.log(`stderr: ${stderr}`);
-              exec(
-                `az aks get-credentials --resource-group ${request.body.resourceGroup} --name ${request.body.clusterName}`,
-                (error, stdout, stderr) => {
-                  if (error) {
-                    response.json({ connected: false });
-                  } else {
-                    console.log(`stdout: ${stdout}`);
-                    console.log(`stderr: ${stderr}`);
-                    exec(`pm2 restart kube-server`, (error, stdout, stderr) => {
-                      if (error) {
-                        response.json({ connected: false });
-                      } else {
-                        console.log(`stdout: ${stdout}`);
-                        console.log(`stderr: ${stderr}`);
-                        exec(
-                          `pm2 restart matrics-server`,
-                          (error, stdout, stderr) => {
-                            if (error) {
-                              response.json({ connected: false });
-                            } else {
-                              console.log(`stdout: ${stdout}`);
-                              console.log(`stderr: ${stderr}`);
-                              response.json({ connected: true });
-                            }
-                          }
-                        );
-                      }
-                    });
-                  }
-                }
-              );
-            }
-          }
-        );
-      }
-    }
-  );
-};
 
 module.exports = {
   getUserDetails,
@@ -336,9 +157,4 @@ module.exports = {
   registerUser,
   updateUser,
   deleteUserPermenently,
-  logintoCluster,
-  updatePluginList,
-  installIstio,
-  configurePrometheus,
-  activePrometheus
 };
