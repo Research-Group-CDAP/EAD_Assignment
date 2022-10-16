@@ -108,7 +108,7 @@ const registerUser = async (req, res) => {
 };
 
 const updateUser = async (request, response) => {
-  return await User.findById(request.body.Id)
+  return await User.findById(request.params.userId)
     .then(async (userDetails) => {
       if (userDetails) {
         if (request.body.username) {

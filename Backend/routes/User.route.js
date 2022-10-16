@@ -10,10 +10,10 @@ const {
   deleteUserPermenently,
 } = require("../controller/User.controller");
 
-router.get("/", auth, getUserDetails);
 router.delete("/remove/:userId", auth, deleteUserPermenently);
 router.post("/register", registerUser);
-router.put("/edit", auth, updateUser);
+router.put("/edit/:userId", auth, updateUser);
 router.post("/login", loginUser);
+router.get("/", auth, getUserDetails);
 
 module.exports = router;
