@@ -14,6 +14,23 @@ const getQueueDetailsFuelStation = async (req, res) => {
   }
 };
 
+const addFuelStation = async (req, res) => {
+  const { fuelStationName } = req.body;
+
+  fuelStation = new FuelStation({
+    fuelStationName,
+  });
+
+  return fuelStation
+    .save()
+    .then((fuelStation) => {
+      return res.json(fuelStation);
+    })
+    .catch((error) => {
+      return res.json(error);
+    });
+};
+
 const addVehicleIntoFuelStation = async (request, response) => {
   return await FuelStation.findById(request.params.fuelStationName)
     .then(async (FuelStationDetails) => {
@@ -47,10 +64,10 @@ const exitVehiclefromFuelStation = async (request, response) => {
   return await FuelStation.findById(request.params.fuelStationName)
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
-
-        FuelStationDetails.presentVehicleLogs = FuelStationDetails.presentVehicleLogs.filter(function (vehicle) {
-          return vehicle.vehicleNumber !== request.body.vehicleNumber;
-        });
+        FuelStationDetails.presentVehicleLogs =
+          FuelStationDetails.presentVehicleLogs.filter(function (vehicle) {
+            return vehicle.vehicleNumber !== request.body.vehicleNumber;
+          });
 
         let vehicleDetails = {
           vehicleType: request.body.vehicleType,
@@ -78,6 +95,7 @@ const exitVehiclefromFuelStation = async (request, response) => {
 };
 
 module.exports = {
+  addFuelStation,
   getQueueDetailsFuelStation,
   addVehicleIntoFuelStation,
   exitVehiclefromFuelStation,
