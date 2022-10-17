@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const FuelStationSchema = new Schema(
   {
     fuelStationName: { type: String, required: true },
+    isFuelHave: { type: Boolean, required: true },
     presentVehicleLogs: [
       {
         vehicleType: { type: String, required: true },

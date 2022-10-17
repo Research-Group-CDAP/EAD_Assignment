@@ -1,6 +1,17 @@
 const User = require("../models/User.model");
 const FuelStation = require("../models/FuelStation.model");
 
+//get All Fuel Station
+const getAllFuelStations = async (req, res) => {
+  try {
+    const allFuelStations = await FuelStation.find();
+    res.json(allFuelStations);
+  } catch {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 //get Queue Details Fuel Station
 const getQueueDetailsFuelStation = async (req, res) => {
   try {
@@ -14,9 +25,11 @@ const getQueueDetailsFuelStation = async (req, res) => {
 
 const addFuelStation = async (req, res) => {
   const { fuelStationName } = req.body;
+  let isFuelHave = false;
 
   fuelStation = new FuelStation({
     fuelStationName,
+    isFuelHave
   });
 
   return fuelStation
@@ -90,9 +103,34 @@ const exitVehiclefromFuelStation = async (request, response) => {
     });
 };
 
+const updatedFuelStatus = async (request, response) => {
+  return await FuelStation.findById(request.params.fuelStationId)
+    .then(async (FuelStationDetails) => {
+      if (FuelStationDetails) {
+
+        FuelStationDetails.isFuelHave = request.body.isFuelHave
+
+        return await FuelStationDetails.save()
+          .then((updatedFuelStation) => {
+            return response.json(updatedFuelStation);
+          })
+          .catch((error) => {
+            return response.json(error);
+          });
+      } else {
+        return response.json("FuelStation Not Found");
+      }
+    })
+    .catch((error) => {
+      return response.json(error);
+    });
+};
+
 module.exports = {
+  getAllFuelStations,
   addFuelStation,
   getQueueDetailsFuelStation,
   addVehicleIntoFuelStation,
   exitVehiclefromFuelStation,
+  updatedFuelStatus
 };
