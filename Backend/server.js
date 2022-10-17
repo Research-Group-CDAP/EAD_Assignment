@@ -16,9 +16,8 @@ app.use(express.json({ extended: false }));
 app.get("/", (req, res) => res.send("EAD Backend Api Running"));
 
 //Define Routes
-
-//-------------------User---------------------
 app.use("/user", require("./routes/User.route"));
+app.use("/fuelstation", require("./routes/FuelStation.route"));
 
 const PORT = process.env.PORT || 5500;
 

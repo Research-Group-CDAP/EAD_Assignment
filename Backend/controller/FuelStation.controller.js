@@ -4,9 +4,7 @@ const FuelStation = require("../models/FuelStation.model");
 //get Queue Details Fuel Station
 const getQueueDetailsFuelStation = async (req, res) => {
   try {
-    const queueDetails = await FuelStation.findOne({
-      fuelStationName: req.params.fuelStationName,
-    });
+    const queueDetails = await FuelStation.findById(req.params.fuelStationId);
     res.json(queueDetails);
   } catch {
     console.log(err.message);
@@ -32,7 +30,7 @@ const addFuelStation = async (req, res) => {
 };
 
 const addVehicleIntoFuelStation = async (request, response) => {
-  return await FuelStation.findById(request.params.fuelStationName)
+  return await FuelStation.findById(request.params.fuelStationId)
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
         let vehicleDetails = {
@@ -41,8 +39,7 @@ const addVehicleIntoFuelStation = async (request, response) => {
           inTime: new Date(),
         };
 
-        FuelStationDetails.presentVehicleLogs =
-          FuelStationDetails.presentVehicleLogs.push(vehicleDetails);
+        FuelStationDetails.presentVehicleLogs.push(vehicleDetails);
 
         return await FuelStationDetails.save()
           .then((updatedFuelStation) => {
@@ -61,7 +58,7 @@ const addVehicleIntoFuelStation = async (request, response) => {
 };
 
 const exitVehiclefromFuelStation = async (request, response) => {
-  return await FuelStation.findById(request.params.fuelStationName)
+  return await FuelStation.findById(request.params.fuelStationId)
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
         FuelStationDetails.presentVehicleLogs =
@@ -75,8 +72,7 @@ const exitVehiclefromFuelStation = async (request, response) => {
           outTime: new Date(),
         };
 
-        FuelStationDetails.pastVehicleLogs =
-          FuelStationDetails.pastVehicleLogs.push(vehicleDetails);
+        FuelStationDetails.pastVehicleLogs.push(vehicleDetails);
 
         return await FuelStationDetails.save()
           .then((updatedFuelStation) => {
