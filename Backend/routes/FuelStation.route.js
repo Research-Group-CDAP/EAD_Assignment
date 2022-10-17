@@ -3,15 +3,17 @@ const router = express.Router();
 
 const {
     getAllFuelStations,
-    addFuelStation,
+    registerFuelStation,
     getQueueDetailsFuelStation,
     addVehicleIntoFuelStation,
     exitVehiclefromFuelStation,
-    updatedFuelStatus
+    updatedFuelStatus,
+    loginFuelStation
 } = require("../controller/FuelStation.controller");
 
+router.post("/loginFuelStation", loginFuelStation);
 router.get("/getAllFuelStations", getAllFuelStations);
-router.post("/addFuelStation", addFuelStation);
+router.post("/registerFuelStation", registerFuelStation);
 router.get("/getQueueDetailsFuelStation/:fuelStationId", getQueueDetailsFuelStation);
 router.put("/addVehicleIntoFuelStation/:fuelStationId", addVehicleIntoFuelStation);
 router.put("/exitVehiclefromFuelStation/:fuelStationId", exitVehiclefromFuelStation);

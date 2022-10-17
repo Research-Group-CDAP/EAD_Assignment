@@ -1,5 +1,8 @@
 const User = require("../models/User.model");
 const FuelStation = require("../models/FuelStation.model");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 //get All Fuel Station
 const getAllFuelStations = async (req, res) => {
@@ -40,6 +43,92 @@ const addFuelStation = async (req, res) => {
     .catch((error) => {
       return res.json(error);
     });
+};
+
+
+//Register Fuel Station
+const registerFuelStation = async (req, res) => {
+  const { email, password, fuelStationName} = req.body;
+  let isFuelHave = false;
+  try {
+    //See if user Exist
+    let fuelStation = await FuelStation.findOne({ email });
+
+    if (fuelStation) {
+      return res.status(400).json({ errors: [{ msg: "FuelStation already exist" }] });
+    }
+
+    fuelStation = new FuelStation({
+      email, password, fuelStationName, isFuelHave
+    });
+
+    //Encrypt Password
+
+    //10 is enogh..if you want more secured.user a value more than 10
+    const salt = await bcrypt.genSalt(10);
+
+    //hashing password
+    fuelStation.password = await bcrypt.hash(password, salt);
+
+    //Return jsonwebtoken
+    const payload = {
+      user: {
+        email: fuelStation.email,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        //save user to the database
+        fuelStation.token = token;
+        return fuelStation
+          .save()
+          .then((registeredFuelStation) => {
+            return res.json(registeredFuelStation);
+          })
+          .catch((error) => {
+            return res.json(error);
+          });
+      }
+    );
+  } catch (err) {
+    //Something wrong with the server
+    console.error(err.message);
+    return res.status(500).send("Server Error");
+  }
+};
+
+
+//Authenticate admin and get token
+const loginFuelStation = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    //See if user Exist
+    let fuelStation = await FuelStation.findOne({ email });
+
+    if (!fuelStation) {
+      return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+    }
+
+    //match the user email and password
+
+    const isMatch = await bcrypt.compare(password, fuelStation.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+    } else {
+      return res.json(fuelStation);
+    }
+  } catch (err) {
+    //Something wrong with the server
+    console.error(err.message);
+    return res.status(500).send("Server Error");
+  }
 };
 
 const addVehicleIntoFuelStation = async (request, response) => {
@@ -128,9 +217,10 @@ const updatedFuelStatus = async (request, response) => {
 
 module.exports = {
   getAllFuelStations,
-  addFuelStation,
+  registerFuelStation,
   getQueueDetailsFuelStation,
   addVehicleIntoFuelStation,
   exitVehiclefromFuelStation,
-  updatedFuelStatus
+  updatedFuelStatus,
+  loginFuelStation
 };
