@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/FuelBuddy/app/src/main/res/drawable/button1.xml" value="0.3275" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_check_station.xml" value="0.18229166666666666" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_fuel.xml" value="0.3625" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_home.xml" value="0.3484375" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_login.xml" value="0.3625" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_navigate_screen.xml" value="0.25416666666666665" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_register.xml" value="0.3625" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_station_home.xml" value="0.24010416666666667" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_station_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/FuelBuddy/app/src/main/res/layout/activity_station_register.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
