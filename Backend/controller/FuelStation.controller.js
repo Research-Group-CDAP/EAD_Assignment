@@ -9,7 +9,7 @@ const getAllFuelStations = async (req, res) => {
   try {
     const allFuelStations = await FuelStation.find();
     res.json(allFuelStations);
-  } catch {
+  } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
   }
@@ -18,9 +18,11 @@ const getAllFuelStations = async (req, res) => {
 //get Queue Details Fuel Station
 const getQueueDetailsFuelStation = async (req, res) => {
   try {
-    const queueDetails = await FuelStation.findById(req.params.fuelStationId);
+    const queueDetails = await FuelStation.findOne({
+      fuelStationName: req.body.fuelStationName,
+    });
     res.json(queueDetails);
-  } catch {
+  } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
   }
@@ -32,7 +34,7 @@ const addFuelStation = async (req, res) => {
 
   fuelStation = new FuelStation({
     fuelStationName,
-    isFuelHave
+    isFuelHave,
   });
 
   return fuelStation
@@ -45,21 +47,25 @@ const addFuelStation = async (req, res) => {
     });
 };
 
-
 //Register Fuel Station
 const registerFuelStation = async (req, res) => {
-  const { email, password, fuelStationName} = req.body;
+  const { email, password, fuelStationName } = req.body;
   let isFuelHave = false;
   try {
     //See if user Exist
     let fuelStation = await FuelStation.findOne({ email });
 
     if (fuelStation) {
-      return res.status(400).json({ errors: [{ msg: "FuelStation already exist" }] });
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "FuelStation already exist" }] });
     }
 
     fuelStation = new FuelStation({
-      email, password, fuelStationName, isFuelHave
+      email,
+      password,
+      fuelStationName,
+      isFuelHave,
     });
 
     //Encrypt Password
@@ -102,7 +108,6 @@ const registerFuelStation = async (req, res) => {
   }
 };
 
-
 //Authenticate admin and get token
 const loginFuelStation = async (req, res) => {
   const { email, password } = req.body;
@@ -132,7 +137,9 @@ const loginFuelStation = async (req, res) => {
 };
 
 const addVehicleIntoFuelStation = async (request, response) => {
-  return await FuelStation.findById(request.params.fuelStationId)
+  return await FuelStation.findOne({
+    fuelStationName: request.body.fuelStationName,
+  })
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
         let vehicleDetails = {
@@ -160,7 +167,9 @@ const addVehicleIntoFuelStation = async (request, response) => {
 };
 
 const exitVehiclefromFuelStation = async (request, response) => {
-  return await FuelStation.findById(request.params.fuelStationId)
+  return await FuelStation.findOne({
+    fuelStationName: request.body.fuelStationName,
+  })
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
         FuelStationDetails.presentVehicleLogs =
@@ -193,11 +202,12 @@ const exitVehiclefromFuelStation = async (request, response) => {
 };
 
 const updatedFuelStatus = async (request, response) => {
-  return await FuelStation.findById(request.params.fuelStationId)
+  return await FuelStation.findOne({
+    fuelStationName: request.body.fuelStationName,
+  })
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
-
-        FuelStationDetails.isFuelHave = request.body.isFuelHave
+        FuelStationDetails.isFuelHave = request.body.isFuelHave;
 
         return await FuelStationDetails.save()
           .then((updatedFuelStation) => {
@@ -222,5 +232,5 @@ module.exports = {
   addVehicleIntoFuelStation,
   exitVehiclefromFuelStation,
   updatedFuelStatus,
-  loginFuelStation
+  loginFuelStation,
 };

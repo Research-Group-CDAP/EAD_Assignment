@@ -14,9 +14,9 @@ const {
 router.post("/loginFuelStation", loginFuelStation);
 router.get("/getAllFuelStations", getAllFuelStations);
 router.post("/registerFuelStation", registerFuelStation);
-router.get("/getQueueDetailsFuelStation/:fuelStationId", getQueueDetailsFuelStation);
-router.put("/addVehicleIntoFuelStation/:fuelStationId", addVehicleIntoFuelStation);
-router.put("/exitVehiclefromFuelStation/:fuelStationId", exitVehiclefromFuelStation);
-router.put("/updatedFuelStatus/:fuelStationId", updatedFuelStatus);
+router.get("/getQueueDetailsFuelStation", getQueueDetailsFuelStation);
+router.put("/addVehicleIntoFuelStation", addVehicleIntoFuelStation);
+router.put("/exitVehiclefromFuelStation", exitVehiclefromFuelStation);
+router.put("/updatedFuelStatus", updatedFuelStatus);
 
 module.exports = router;
