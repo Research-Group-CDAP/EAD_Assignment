@@ -115,7 +115,7 @@ const registerFuelStation = async (req, res) => {
         if (err) throw err;
         //save user to the database
         fuelStation.token = token;
-        queueDetails.fuelStatus = "Fuel Over";
+        fuelStation.fuelStatus = "Fuel Over";
         return fuelStation
           .save()
           .then((registeredFuelStation) => {
