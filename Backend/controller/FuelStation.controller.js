@@ -115,6 +115,7 @@ const registerFuelStation = async (req, res) => {
         if (err) throw err;
         //save user to the database
         fuelStation.token = token;
+        queueDetails.fuelStatus = "Fuel Over";
         return fuelStation
           .save()
           .then((registeredFuelStation) => {
@@ -151,6 +152,12 @@ const loginFuelStation = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
     } else {
+      if (fuelStation.isFuelHave) {
+        fuelStation.fuelStatus = "Fuel Have";
+      } else {
+        fuelStation.fuelStatus = "Fuel Over";
+      }
+
       return res.json(fuelStation);
     }
   } catch (err) {
@@ -231,7 +238,11 @@ const updatedFuelStatus = async (request, response) => {
   })
     .then(async (FuelStationDetails) => {
       if (FuelStationDetails) {
-        FuelStationDetails.isFuelHave = request.body.isFuelHave;
+        if (request.body.isFuelHave === "true") {
+          FuelStationDetails.isFuelHave = true;
+        } else {
+          FuelStationDetails.isFuelHave = false;
+        }
 
         return await FuelStationDetails.save()
           .then((updatedFuelStation) => {
