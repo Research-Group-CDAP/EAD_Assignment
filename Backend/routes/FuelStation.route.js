@@ -15,7 +15,7 @@ const {
 router.post("/loginFuelStation", loginFuelStation);
 router.get("/getAllFuelStations", getAllFuelStations);
 router.post("/registerFuelStation", registerFuelStation);
-router.get("/getQueueDetailsFuelStation", getQueueDetailsFuelStation);
+router.post("/getQueueDetailsFuelStation", getQueueDetailsFuelStation);
 router.put("/addVehicleIntoFuelStation", addVehicleIntoFuelStation);
 router.put("/exitVehiclefromFuelStation", exitVehiclefromFuelStation);
 router.put("/updatedFuelStatus", updatedFuelStatus);
