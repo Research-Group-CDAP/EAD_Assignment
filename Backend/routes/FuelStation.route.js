@@ -8,7 +8,8 @@ const {
     addVehicleIntoFuelStation,
     exitVehiclefromFuelStation,
     updatedFuelStatus,
-    loginFuelStation
+    loginFuelStation,
+    getAllNamesOfFuelStations
 } = require("../controller/FuelStation.controller");
 
 router.post("/loginFuelStation", loginFuelStation);
@@ -18,5 +19,6 @@ router.get("/getQueueDetailsFuelStation", getQueueDetailsFuelStation);
 router.put("/addVehicleIntoFuelStation", addVehicleIntoFuelStation);
 router.put("/exitVehiclefromFuelStation", exitVehiclefromFuelStation);
 router.put("/updatedFuelStatus", updatedFuelStatus);
+router.get("/getAllNamesOfFuelStations", getAllNamesOfFuelStations);
 
 module.exports = router;

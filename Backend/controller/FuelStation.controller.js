@@ -15,6 +15,22 @@ const getAllFuelStations = async (req, res) => {
   }
 };
 
+//get All Fuel Station By Name
+const getAllNamesOfFuelStations = async (req, res) => {
+  try {
+    const allFuelStations = await FuelStation.find();
+    tempArray = [];
+    await allFuelStations.forEach((fuelStation)=>{
+      console.log(fuelStation.fuelStationName);
+      tempArray.push(fuelStation.fuelStationName)
+    })
+    res.json(tempArray);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 //get Queue Details Fuel Station
 const getQueueDetailsFuelStation = async (req, res) => {
   try {
@@ -233,4 +249,5 @@ module.exports = {
   exitVehiclefromFuelStation,
   updatedFuelStatus,
   loginFuelStation,
+  getAllNamesOfFuelStations
 };
