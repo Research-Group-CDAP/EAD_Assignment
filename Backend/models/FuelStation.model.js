@@ -8,6 +8,8 @@ const FuelStationSchema = new Schema(
     token: { type: String, required: false },
     fuelStationName: { type: String, required: true },
     isFuelHave: { type: Boolean, required: true },
+    fuelStatus: { type: String, required: false },
+    queueCount: { type: String, required: false },
     presentVehicleLogs: [
       {
         vehicleType: { type: String, required: true },

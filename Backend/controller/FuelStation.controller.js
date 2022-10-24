@@ -20,10 +20,10 @@ const getAllNamesOfFuelStations = async (req, res) => {
   try {
     const allFuelStations = await FuelStation.find();
     tempArray = [];
-    await allFuelStations.forEach((fuelStation)=>{
+    await allFuelStations.forEach((fuelStation) => {
       console.log(fuelStation.fuelStationName);
-      tempArray.push(fuelStation.fuelStationName)
-    })
+      tempArray.push(fuelStation.fuelStationName);
+    });
     res.json(tempArray);
   } catch (err) {
     console.log(err.message);
@@ -37,6 +37,14 @@ const getQueueDetailsFuelStation = async (req, res) => {
     const queueDetails = await FuelStation.findOne({
       fuelStationName: req.body.fuelStationName,
     });
+
+    queueDetails.queueCount = queueDetails.presentVehicleLogs.length;
+    if (queueDetails.isFuelHave) {
+      queueDetails.fuelStatus = "Fuel Have";
+    } else {
+      queueDetails.fuelStatus = "Fuel Over";
+    }
+
     res.json(queueDetails);
   } catch (err) {
     console.log(err.message);
@@ -249,5 +257,5 @@ module.exports = {
   exitVehiclefromFuelStation,
   updatedFuelStatus,
   loginFuelStation,
-  getAllNamesOfFuelStations
+  getAllNamesOfFuelStations,
 };
