@@ -65,6 +65,7 @@ public class Login extends AppCompatActivity {
 
     }
 
+    //Calling the login User endpoint
     private void loginUser(){
         try {
             String loginurl = "https://ead-assignment-fuel-app.herokuapp.com/user/login/";

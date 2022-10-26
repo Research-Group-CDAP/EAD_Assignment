@@ -75,6 +75,8 @@ public class StationRegister extends AppCompatActivity {
 
 
     }
+
+    //Calling the register fuel station endpoint
     private void registerUser(){
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);

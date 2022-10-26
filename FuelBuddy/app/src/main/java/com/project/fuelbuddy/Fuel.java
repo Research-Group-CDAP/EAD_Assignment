@@ -70,7 +70,7 @@ public class Fuel extends AppCompatActivity implements AdapterView.OnItemSelecte
     }
 
 
-
+    // Method for fetch all fuel stations
     private void retrieveJSON() {
         String Stationurl = "https://ead-assignment-fuel-app.herokuapp.com/fuelstation/getAllNamesOfFuelStations";
         HttpHandler sh = new HttpHandler();

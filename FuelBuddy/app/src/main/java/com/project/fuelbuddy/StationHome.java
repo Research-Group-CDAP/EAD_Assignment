@@ -85,6 +85,7 @@ public class StationHome extends AppCompatActivity {
 
     }
 
+    //Calling the update fuel status of the fuel station endpoint
     private void UpdateStation() {
         try {
             String Stationurl = "https://ead-assignment-fuel-app.herokuapp.com/fuelstation/updatedFuelStatus/";

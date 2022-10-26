@@ -84,6 +84,8 @@ public class CheckStation extends AppCompatActivity {
 
 
     }
+
+    // Method for fetch queue details for specific fuel station
     private void StationData(){
         try {
             String Stationurl = "https://ead-assignment-fuel-app.herokuapp.com/fuelstation/getQueueDetailsFuelStation/";

@@ -52,6 +52,7 @@ const getQueueDetailsFuelStation = async (req, res) => {
   }
 };
 
+//Register Fuel Station
 const addFuelStation = async (req, res) => {
   const { fuelStationName } = req.body;
   let isFuelHave = false;
@@ -167,6 +168,7 @@ const loginFuelStation = async (req, res) => {
   }
 };
 
+//Method of add vehicle into queue
 const addVehicleIntoFuelStation = async (request, response) => {
   return await FuelStation.findOne({
     fuelStationName: request.body.fuelStationName,
@@ -197,6 +199,7 @@ const addVehicleIntoFuelStation = async (request, response) => {
     });
 };
 
+//Method of exit vehicle into queue
 const exitVehiclefromFuelStation = async (request, response) => {
   return await FuelStation.findOne({
     fuelStationName: request.body.fuelStationName,
@@ -232,6 +235,7 @@ const exitVehiclefromFuelStation = async (request, response) => {
     });
 };
 
+//Method for update fuel status in the fuel station
 const updatedFuelStatus = async (request, response) => {
   return await FuelStation.findOne({
     fuelStationName: request.body.fuelStationName,

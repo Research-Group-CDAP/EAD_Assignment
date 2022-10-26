@@ -95,6 +95,8 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
 
 
     }
+
+ //Calling the register User endpoint
  private void registerUser(){
      try {
          RequestQueue requestQueue = Volley.newRequestQueue(this);

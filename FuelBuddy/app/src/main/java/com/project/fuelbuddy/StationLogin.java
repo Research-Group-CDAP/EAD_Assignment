@@ -60,6 +60,8 @@ public class StationLogin extends AppCompatActivity {
             }
         });
     }
+
+    //Calling the fuel station login endpoint
     private void loginUser(){
         try {
             String loginurl = "https://ead-assignment-fuel-app.herokuapp.com/fuelstation/loginFuelStation/";

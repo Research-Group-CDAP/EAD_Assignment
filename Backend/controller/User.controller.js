@@ -107,6 +107,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+//Update User details
 const updateUser = async (request, response) => {
   return await User.findById(request.params.userId)
     .then(async (userDetails) => {
