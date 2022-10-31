@@ -92,7 +92,6 @@ public class CheckStation extends AppCompatActivity {
             HttpHandler sh = new HttpHandler();
             String jsonStr = sh.makeServiceCall(Stationurl);
 
-
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("fuelStationName",StationName);

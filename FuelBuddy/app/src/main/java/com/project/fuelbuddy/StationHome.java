@@ -45,11 +45,14 @@ public class StationHome extends AppCompatActivity {
         fuelStatus = sh.getString("fuelStatus","");
 
         stationName.setText(StationName);
-        if(fuelStatus == "Fuel Over"){
-            sw1.setChecked(false);
-        }
-        else if (fuelStatus == "Fuel Have"){
+
+        Log.i("Fuel Status Check",fuelStatus);
+        if (fuelStatus.equals("Fuel Have")){
+            Log.i("Fuel Have",fuelStatus);
             sw1.setChecked(true);
+        }else{
+            Log.i("Fuel Over",fuelStatus);
+            sw1.setChecked(false);
         }
 
         sw1.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +98,13 @@ public class StationHome extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("fuelStationName", StationName);
-            Log.i("Switch213",Switch1);
-            jsonBody.put("isFuelHave", Switch1);
-            Log.i("StationName123", StationName);
+            if(sw1.isChecked()){
+                Log.i("Log Fuel Have Check", "true");
+                jsonBody.put("isFuelHave", "true");
+            }else{
+                Log.i("Log Fuel Have Check", "false");
+                jsonBody.put("isFuelHave", "false");
+            }
 
             final String requestBody = jsonBody.toString();
 

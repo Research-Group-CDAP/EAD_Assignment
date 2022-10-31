@@ -109,9 +109,9 @@ public class Fuel extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        Log.i("Spinner","Spinner Selected");
         StationName = stations.get(i);
         Log.i("Spinner",StationName);
-
     }
 
     @Override
